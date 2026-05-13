@@ -1,324 +1,5 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>四年级数学测试系统 - 北师大版（海淀区）v2.0</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .card {
-            padding: 0;
-        }
-
-        .card h2 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1.8em;
-        }
-
-        .description {
-            color: #6c757d;
-            margin-bottom: 30px;
-            font-size: 1.05em;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-            font-size: 1.05em;
-        }
-
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn {
-            padding: 14px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: 10px;
-            margin-top: 10px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-
-        .output-area {
-            margin-top: 40px;
-            border-top: 3px solid #667eea;
-            padding-top: 30px;
-        }
-
-        .output-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .output-header h3 {
-            color: #333;
-            font-size: 1.5em;
-        }
-
-        .test-paper {
-            background: #f8f9fa;
-            padding: 40px;
-            border-radius: 8px;
-            border: 1px solid #dee2e6;
-            font-size: 1em;
-            line-height: 1.8;
-            font-family: "Courier New", monospace;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .test-paper pre {
-            white-space: pre-wrap;
-            margin: 0;
-        }
-
-        .page-break {
-            display: none;
-        }
-
-        footer {
-            background: #f8f9fa;
-            padding: 20px;
-            text-align: center;
-            color: #6c757d;
-            border-top: 1px solid #e9ecef;
-        }
-
-        .main-content {
-            padding: 40px 30px;
-        }
-
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-
-            .container {
-                box-shadow: none;
-                border-radius: 0;
-            }
-
-            header, .output-actions, .btn, footer, .form-group, .description, h2, .output-header h3 {
-                display: none !important;
-            }
-
-            .main-content {
-                padding: 0;
-            }
-
-            .output-area {
-                border: none;
-                padding: 0;
-                margin: 0;
-            }
-
-            .test-paper {
-                background: white;
-                border: none;
-                padding: 20px;
-                max-height: none;
-                font-family: "SimSun", "宋体", serif;
-                font-size: 12pt;
-            }
-
-            .page-break {
-                display: block;
-                page-break-before: always;
-                break-before: page;
-                height: 0;
-                margin: 0;
-                padding: 0;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>📚 四年级数学测试系统</h1>
-            <p class="subtitle">北京师范大学版 · 海淀区标准 · 题库随机抽取</p>
-        </header>
-
-        <div class="main-content">
-            <div class="card">
-                <h2>📝 生成单元测试卷</h2>
-                <p class="description">选择学期和单元，自动生成标准A4测试卷（每次题目都不同）</p>
-
-                <div class="form-group">
-                    <label for="semester-select">选择学期：</label>
-                    <select id="semester-select" onchange="updateUnits()">
-                        <option value="first">四年级上学期</option>
-                        <option value="second">四年级下学期</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="unit-select">选择单元：</label>
-                    <select id="unit-select">
-                        <option value="1-1">第一单元 - 认识更大的数</option>
-                        <option value="1-2">第二单元 - 线与角</option>
-                        <option value="1-3">第三单元 - 乘法</option>
-                        <option value="1-4">第四单元 - 图形的变换</option>
-                        <option value="1-5">第五单元 - 除法</option>
-                        <option value="1-6">第六单元 - 方向与位置</option>
-                        <option value="1-7">第七单元 - 生活中的负数</option>
-                        <option value="1-8">第八单元 - 可能性</option>
-                    </select>
-                </div>
-
-                <button class="btn btn-primary" onclick="generateTest()">🎯 生成随机测试卷</button>
-
-                <div id="test-output" class="output-area" style="display: none;">
-                    <div class="output-header">
-                        <h3>生成的测试卷</h3>
-                        <div class="output-actions">
-                            <button class="btn btn-secondary" onclick="window.print()">🖨️ 打印</button>
-                            <button class="btn btn-secondary" onclick="downloadTest()">💾 下载</button>
-                        </div>
-                    </div>
-                    <div id="test-content" class="test-paper"></div>
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <p>© 2026 四年级数学测试系统 | 每次生成题目都不同 | 基于北师大版教材</p>
-        </footer>
-    </div>
-
-    <script>
-        // 学期单元配置
-        const semesterUnits = {
-            first: [
-                { value: "1-1", text: "第一单元 - 认识更大的数" },
-                { value: "1-2", text: "第二单元 - 线与角" },
-                { value: "1-3", text: "第三单元 - 乘法" },
-                { value: "1-4", text: "第四单元 - 图形的变换" },
-                { value: "1-5", text: "第五单元 - 除法" },
-                { value: "1-6", text: "第六单元 - 方向与位置" },
-                { value: "1-7", text: "第七单元 - 生活中的负数" },
-                { value: "1-8", text: "第八单元 - 可能性" }
-            ],
-            second: [
-                { value: "2-1", text: "第一单元 - 小数的意义和加减法" },
-                { value: "2-2", text: "第二单元 - 认识三角形和四边形" },
-                { value: "2-3", text: "第三单元 - 小数乘法" },
-                { value: "2-4", text: "第四单元 - 观察物体" },
-                { value: "2-5", text: "第五单元 - 认识方程" },
-                { value: "2-6", text: "第六单元 - 数据的表示和分析" },
-                { value: "2-7", text: "第七单元 - 认识负数" },
-                { value: "2-8", text: "第八单元 - 总复习" }
-            ]
-        };
-
-        // 更新单元选择器
-        function updateUnits() {
-            console.log('updateUnits 被调用');
-            const semester = document.getElementById('semester-select').value;
-            console.log('选择的学期:', semester);
-            const unitSelect = document.getElementById('unit-select');
-            const units = semesterUnits[semester];
-            console.log('单元数据:', units);
-
-            unitSelect.innerHTML = '';
-            units.forEach(unit => {
-                const option = document.createElement('option');
-                option.value = unit.value;
-                option.textContent = unit.text;
-                unitSelect.appendChild(option);
-            });
-            console.log('单元列表已更新，共', units.length, '个单元');
-        }
-
-        // 题库
-        const questionBank = {
-            '1-1': {
+const questionBank = {
+            s1u1: {
                 title: "认识更大的数",
                 multipleChoice: [
                     { q: "下面各数中，最大的数是（  ）", options: ["9999", "10000", "9998", "10001"], answer: "D", difficulty: "easy" },
@@ -359,7 +40,7 @@
                     { q: "体育馆有6500个座位，上午来了2350人，下午又来了1870人。还有多少个空座位？", answer: "2350+1870=4220(人)，6500-4220=2280(个)", difficulty: "hard" },
                 ]
             },
-            '1-2': {
+            s1u2: {
                 title: "线与角",
                 multipleChoice: [
                     { q: "一个平角等于（  ）个直角", options: ["1", "2", "3", "4"], answer: "B", difficulty: "easy" },
@@ -386,7 +67,7 @@
                     { q: "把一张圆形纸片对折3次，每一份是多少度的角？", answer: "360÷8=45(度)", difficulty: "hard" },
                 ]
             },
-            '1-3': {
+            s1u3: {
                 title: "乘法",
                 multipleChoice: [
                     { q: "25 × 4 = （  ）", options: ["80", "90", "100", "110"], answer: "C", difficulty: "easy" },
@@ -420,7 +101,7 @@
                     { q: "一个长方形操场长85米，宽48米，这个操场的周长是多少米？", answer: "(85+48)×2=266(米)", difficulty: "medium" },
                 ]
             },
-            '1-5': {
+            s1u5: {
                 title: "除法",
                 multipleChoice: [
                     { q: "840 ÷ 70 = （  ）", options: ["11", "12", "13", "14"], answer: "B", difficulty: "easy" },
@@ -454,7 +135,7 @@
                     { q: "商店运来850千克水果，卖出25箱后还剩350千克。平均每箱水果重多少千克？", answer: "(850-350)÷25=20(千克)", difficulty: "hard" },
                 ]
             },
-            '1-4': {
+            s1u4: {
                 title: "图形的变换",
                 multipleChoice: [
                     { q: "下面图形中，是轴对称图形的是（  ）", options: ["平行四边形", "长方形", "梯形", "任意三角形"], answer: "B", difficulty: "easy" },
@@ -476,7 +157,7 @@
                     { q: "画出正方形的所有对称轴", answer: "作图题（略）", difficulty: "medium" },
                 ]
             },
-            '1-6': {
+            s1u6: {
                 title: "方向与位置",
                 multipleChoice: [
                     { q: "面向北方，你的右面是（  ）", options: ["东", "南", "西", "北"], answer: "A", difficulty: "easy" },
@@ -496,7 +177,7 @@
                     { q: "从学校向东走500米到邮局，从邮局向哪个方向走多少米回到学校？", answer: "向西走500米", difficulty: "easy" },
                 ]
             },
-            '1-7': {
+            s1u7: {
                 title: "生活中的负数",
                 multipleChoice: [
                     { q: "如果+5表示收入5元，那么-8表示（  ）", options: ["收入8元", "支出8元", "收入3元", "支出3元"], answer: "B", difficulty: "easy" },
@@ -516,7 +197,7 @@
                     { q: "小明在做游戏，规定向前走为正，向后走为负。小明按以下路线行走：+5米、-3米、+8米、-6米、-2米。最后小明在起点的前面还是后面？距离起点多远？", answer: "5-3+8-6-2=2(米)，前面2米", difficulty: "hard" },
                 ]
             },
-            '1-8': {
+            s1u8: {
                 title: "可能性",
                 multipleChoice: [
                     { q: "下列事件中，（  ）是不可能发生的", options: ["明天会下雨", "太阳从西边升起", "抛硬币正面朝上", "抽奖中奖"], answer: "B", difficulty: "easy" },
@@ -535,7 +216,7 @@
                     { q: "袋子里有红、黄、蓝三种颜色的球共20个，其中红球8个，黄球7个。任意摸出1个球，摸到哪种颜色球的可能性最小？", answer: "蓝球，因为蓝球只有5个", difficulty: "medium" },
                 ]
             }
-                '2-1': {
+                s2u1: {
                     title: "小数的意义和加减法",
                     multipleChoice: [
                         { q: "0.8里面有（  ）个0.1", options: ["8", "0.8", "80", "0.08"], answer: "A", difficulty: "easy" },
@@ -576,7 +257,7 @@
                         { q: "水果店上午卖出水果12.5千克，下午比上午多卖3.8千克。这一天一共卖出水果多少千克？", answer: "12.5+3.8=16.3(千克)，12.5+16.3=28.8(千克)", difficulty: "medium" }
                     ]
                 },
-                '2-2': {
+                s2u2: {
                     title: "认识三角形和四边形",
                     multipleChoice: [
                         { q: "三角形具有（  ）", options: ["不稳定性", "稳定性", "对称性", "平行性"], answer: "B", difficulty: "easy" },
@@ -613,7 +294,7 @@
                         { q: "用4根长度都是5厘米的小棒，可以摆成什么图形？", answer: "正方形或菱形", difficulty: "easy" }
                     ]
                 },
-                '2-3': {
+                s2u3: {
                     title: "小数乘法",
                     multipleChoice: [
                         { q: "0.6 × 3 = （  ）", options: ["1.8", "18", "0.18", "180"], answer: "A", difficulty: "easy" },
@@ -654,7 +335,7 @@
                         { q: "一个正方形的边长是3.5分米，它的周长是多少分米？", answer: "3.5×4=14(分米)", difficulty: "easy" }
                     ]
                 },
-                '2-4': {
+                s2u4: {
                     title: "观察物体",
                     multipleChoice: [
                         { q: "从正面看到的形状叫做（  ）", options: ["主视图", "俯视图", "侧视图", "平面图"], answer: "A", difficulty: "easy" },
@@ -676,7 +357,7 @@
                         { q: "一个长方体盒子，长10厘米，宽6厘米，高4厘米。从正面看到的面积是多少？", answer: "10×4=40(平方厘米)", difficulty: "medium" }
                     ]
                 },
-                '2-5': {
+                s2u5: {
                     title: "认识方程",
                     multipleChoice: [
                         { q: "下列式子中，是方程的是（  ）", options: ["3+5=8", "x+5", "x+5=12", "5>3"], answer: "C", difficulty: "easy" },
@@ -716,7 +397,7 @@
                         { q: "学校买来一批图书，分给4个班，每班分到35本后，还剩20本。一共买来多少本图书？（用方程解）", answer: "x-4×35=20，x=160(本)", difficulty: "hard" }
                     ]
                 },
-                '2-6': {
+                s2u6: {
                     title: "数据的表示和分析",
                     multipleChoice: [
                         { q: "条形统计图的特点是（  ）", options: ["能清楚地看出数量的多少", "能看出数量的变化趋势", "能看出部分与整体的关系", "以上都对"], answer: "A", difficulty: "easy" },
@@ -744,7 +425,7 @@
                         { q: "看图回答：根据条形统计图，哪个班人数最多？哪个班人数最少？相差多少人？（假设数据）", answer: "根据统计图回答（略）", difficulty: "medium" }
                     ]
                 },
-                '2-7': {
+                s2u7: {
                     title: "认识负数",
                     multipleChoice: [
                         { q: "如果+10表示收入10元，那么-8表示（  ）", options: ["收入8元", "支出8元", "收入2元", "支出2元"], answer: "B", difficulty: "easy" },
@@ -775,7 +456,7 @@
                         { q: "海平面的高度记作0米，珠穆朗玛峰高出海平面8844米应记作多少米？", answer: "+8844米", difficulty: "easy" }
                     ]
                 },
-                '2-8': {
+                s2u8: {
                     title: "总复习",
                     multipleChoice: [
                         { q: "3.45中，4在（  ）位", options: ["个位", "十分位", "百分位", "千分位"], answer: "B", difficulty: "easy" },
@@ -814,194 +495,3 @@
                     ]
                 }
         };
-
-        // 随机打乱数组
-        function shuffleArray(array) {
-            const arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
-
-        // 生成测试卷
-        function generateTest() {
-            console.log('生成测试卷...');
-
-            const semester = document.getElementById('semester-select').value;
-            const unit = document.getElementById('unit-select').value;
-
-            console.log('学期:', semester, '单元:', unit);
-
-            const bank = questionBank[unit];
-
-            if (!bank) {
-                alert('该单元题库正在完善中！');
-                return;
-            }
-
-            // 随机抽取题目（不考虑难度）
-            const multipleChoice = shuffleArray(bank.multipleChoice).slice(0, 5);
-            const fillBlank = shuffleArray(bank.fillBlank).slice(0, 5);
-            const calculation = shuffleArray(bank.calculation).slice(0, 6);
-            const wordProblems = shuffleArray(bank.wordProblems).slice(0, 3);
-
-            const semesterName = semester === 'first' ? '上学期' : '下学期';
-            let content = `四年级${semesterName}数学第${getUnitNumber(unit)}单元测试卷 - ${bank.title}
-（北师大版 · 海淀区标准）
-
-班级：________    姓名：________    学号：________    成绩：________
-
-================================================================================
-
-一、选择题（每题3分，共${multipleChoice.length * 3}分）
-
-`;
-
-            multipleChoice.forEach((item, index) => {
-                content += `${index + 1}. ${item.q}\n`;
-                item.options.forEach((opt, i) => {
-                    content += `   ${String.fromCharCode(65 + i)}. ${opt}    `;
-                });
-                content += '\n\n';
-            });
-
-            content += `================================================================================
-
-二、填空题（每空2分，共${fillBlank.length * 4}分）
-
-`;
-
-            fillBlank.forEach((item, index) => {
-                content += `${index + multipleChoice.length + 1}. ${item.q}\n\n`;
-            });
-
-            content += `================================================================================
-
-三、计算题（每题3分，共${calculation.length * 3}分）
-
-`;
-
-            calculation.forEach((item, index) => {
-                content += `${index + multipleChoice.length + fillBlank.length + 1}. ${item.q} =\n\n`;
-            });
-
-            content += `================================================================================
-
-四、应用题（每题6分，共${wordProblems.length * 6}分）
-
-`;
-
-            wordProblems.forEach((item, index) => {
-                content += `${index + multipleChoice.length + fillBlank.length + calculation.length + 1}. ${item.q}\n\n\n\n`;
-            });
-
-            content += `================================================================================
-
-注意事项：
-1. 请认真审题，仔细计算
-2. 计算题要写出完整过程
-3. 应用题要写出算式和答案
-4. 检查时注意单位是否正确
-
-本试卷总分：100分    考试时间：60分钟
-
-
-<div class="page-break"></div>
-
-================================================================================
-================================================================================
-================================================================================
-
-参考答案
-
-================================================================================
-
-一、选择题答案
-
-`;
-
-            multipleChoice.forEach((item, index) => {
-                content += `${index + 1}. ${item.answer}    `;
-                if ((index + 1) % 5 === 0) content += '\n';
-            });
-
-            content += `\n\n================================================================================
-
-二、填空题答案
-
-`;
-
-            fillBlank.forEach((item, index) => {
-                content += `${index + multipleChoice.length + 1}. ${item.answer}\n`;
-            });
-
-            content += `\n================================================================================
-
-三、计算题答案
-
-`;
-
-            calculation.forEach((item, index) => {
-                content += `${index + multipleChoice.length + fillBlank.length + 1}. ${item.q} = ${item.answer}\n`;
-            });
-
-            content += `\n================================================================================
-
-四、应用题答案
-
-`;
-
-            wordProblems.forEach((item, index) => {
-                content += `${index + multipleChoice.length + fillBlank.length + calculation.length + 1}. ${item.answer}\n\n`;
-            });
-
-            content += `================================================================================`;
-
-            document.getElementById('test-content').innerHTML = '<pre>' + content + '</pre>';
-            document.getElementById('test-output').style.display = 'block';
-            document.getElementById('test-output').scrollIntoView({ behavior: 'smooth' });
-
-            console.log('试卷生成成功！');
-        }
-
-        function getUnitNumber(unit) {
-            const unitNum = unit.split('-')[1]; // 获取单元编号部分，例如 '1-3' -> '3'
-            const units = { '1': '一', '2': '二', '3': '三', '4': '四', '5': '五', '6': '六', '7': '七', '8': '八' };
-            return units[unitNum] || unitNum;
-        }
-
-        function downloadTest() {
-            const content = document.getElementById('test-content').textContent;
-            const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-
-            const semester = document.getElementById('semester-select').value;
-            const unit = document.getElementById('unit-select').value;
-            const date = new Date().toISOString().slice(0, 10);
-            const semesterName = semester === 'first' ? '上学期' : '下学期';
-
-            link.download = `四年级${semesterName}数学第${unit}单元-${date}.md`;
-            link.click();
-        }
-
-        // 页面加载时初始化单元列表
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM 加载完成，开始初始化...');
-            updateUnits();
-            console.log('页面加载完成！题库已准备就绪。');
-        });
-
-        // 如果 DOM 已经加载完成，立即执行
-        if (document.readyState === 'loading') {
-            console.log('等待 DOM 加载...');
-        } else {
-            console.log('DOM 已就绪，立即初始化...');
-            updateUnits();
-            console.log('页面加载完成！题库已准备就绪。');
-        }
-    </script>
-</body>
-</html>
