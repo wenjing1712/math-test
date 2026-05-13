@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四年级数学测试系统 - 北师大版（海淀区）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .card {
+            padding: 0;
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .description {
+            color: #6c757d;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .output-area {
+            margin-top: 40px;
+            border-top: 3px solid #667eea;
+            padding-top: 30px;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .output-header h3 {
+            color: #333;
+            font-size: 1.5em;
+        }
+
+        .test-paper {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            font-size: 1em;
+            line-height: 1.8;
+            font-family: "Courier New", monospace;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .test-paper pre {
+            white-space: pre-wrap;
+            margin: 0;
+        }
+
+        .page-break {
+            display: none;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #6c757d;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .main-content {
+            padding: 40px 30px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            header, .output-actions, .btn, footer, .form-group, .description, h2, .output-header h3 {
+                display: none !important;
+            }
+
+            .main-content {
+                padding: 0;
+            }
+
+            .output-area {
+                border: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .test-paper {
+                background: white;
+                border: none;
+                padding: 20px;
+                max-height: none;
+                font-family: "SimSun", "宋体", serif;
+                font-size: 12pt;
+            }
+
+            .page-break {
+                display: block;
+                page-break-before: always;
+                break-before: page;
+                height: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 四年级数学测试系统</h1>
+            <p class="subtitle">北京师范大学版 · 海淀区标准 · 随机出题</p>
+        </header>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>📝 生成单元测试卷</h2>
+                <p class="description">选择单元和难度，自动生成标准A4测试卷（每次题目都不同）</p>
+
+                <div class="form-group">
+                    <label for="unit-select">选择单元：</label>
+                    <select id="unit-select">
+                        <option value="1">第一单元 - 认识更大的数</option>
+                        <option value="2">第二单元 - 线与角</option>
+                        <option value="3">第三单元 - 乘法</option>
+                        <option value="4">第四单元 - 图形的变换</option>
+                        <option value="5">第五单元 - 除法</option>
+                        <option value="6">第六单元 - 方向与位置</option>
+                        <option value="7">第七单元 - 生活中的负数</option>
+                        <option value="8">第八单元 - 可能性</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="difficulty-select">难度等级：</label>
+                    <select id="difficulty-select">
+                        <option value="easy">基础（简单题为主）</option>
+                        <option value="medium" selected>中等（海淀区标准）</option>
+                        <option value="hard">提高（难题为主）</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" onclick="generateTest()">🎯 生成随机测试卷</button>
+
+                <div id="test-output" class="output-area" style="display: none;">
+                    <div class="output-header">
+                        <h3>生成的测试卷</h3>
+                        <div class="output-actions">
+                            <button class="btn btn-secondary" onclick="window.print()">🖨️ 打印</button>
+                            <button class="btn btn-secondary" onclick="downloadTest()">💾 下载</button>
+                        </div>
+                    </div>
+                    <div id="test-content" class="test-paper"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 四年级数学测试系统 | 每次生成题目都不同 | 基于北师大版教材</p>
+        </footer>
+    </div>
+
+    <script>
+        // 题库
+        const questionBank = {
+            1: {
+                title: "认识更大的数",
+                multipleChoice: [
+                    { q: "下面各数中，最大的数是（  ）", options: ["9999", "10000", "9998", "10001"], answer: "D", difficulty: "easy" },
+                    { q: "由8个千、6个百和5个一组成的数是（  ）", options: ["865", "8065", "8605", "8650"], answer: "C", difficulty: "medium" },
+                    { q: "与'九千零七'相等的数是（  ）", options: ["9700", "9007", "9070", "907"], answer: "B", difficulty: "easy" },
+                    { q: "下面各数中，一个零也不读的是（  ）", options: ["5008", "5080", "5800", "5088"], answer: "D", difficulty: "medium" },
+                    { q: "最小的四位数比最大的三位数多（  ）", options: ["1", "10", "100", "1000"], answer: "A", difficulty: "easy" },
+                    { q: "6000里面有（  ）个百", options: ["6", "60", "600", "6000"], answer: "B", difficulty: "medium" },
+                    { q: "下面各数中，读两个零的是（  ）", options: ["5008", "5080", "5005", "5808"], answer: "C", difficulty: "hard" },
+                    { q: "最接近9000的数是（  ）", options: ["8997", "9005", "8989", "9012"], answer: "A", difficulty: "hard" },
+                ],
+                fillBlank: [
+                    { q: "一万里面有（  ）个千，（  ）个百。", answer: "10, 100", difficulty: "easy" },
+                    { q: "6725是由（  ）个千、（  ）个百、（  ）个十和（  ）个一组成的。", answer: "6, 7, 2, 5", difficulty: "medium" },
+                    { q: "用3、0、8、5组成的最大四位数是（  ），最小四位数是（  ）。", answer: "8530, 3058", difficulty: "medium" },
+                    { q: "一个数由5个千和9个一组成，这个数是（  ），读作（  ）。", answer: "5009, 五千零九", difficulty: "easy" },
+                    { q: "按规律填数：2000、3000、4000、（  ）、（  ）。", answer: "5000, 6000", difficulty: "easy" },
+                    { q: "9□58≈9000，□里最大填（  ）", answer: "4", difficulty: "hard" },
+                    { q: "与9999相邻的两个数是（  ）和（  ）", answer: "9998, 10000", difficulty: "medium" },
+                    { q: "一个四位数，千位是5，个位是3，其余各位都是0，这个数是（  ）", answer: "5003", difficulty: "medium" },
+                ],
+                calculation: [
+                    { q: "3000 + 2000", answer: "5000", difficulty: "easy" },
+                    { q: "7000 - 4000", answer: "3000", difficulty: "easy" },
+                    { q: "500 + 800", answer: "1300", difficulty: "easy" },
+                    { q: "3425 + 2367", answer: "5792", difficulty: "medium" },
+                    { q: "6843 - 2759", answer: "4084", difficulty: "medium" },
+                    { q: "5006 + 3994", answer: "9000", difficulty: "medium" },
+                    { q: "4500 - 1200 + 800", answer: "4100", difficulty: "hard" },
+                    { q: "3600 + 2400 - 1500", answer: "4500", difficulty: "hard" },
+                ],
+                wordProblems: [
+                    { q: "学校图书馆有故事书3500本，科技书比故事书少800本。图书馆一共有故事书和科技书多少本？", answer: "3500-800=2700(本)，3500+2700=6200(本)", difficulty: "medium" },
+                    { q: "水果店上午卖出苹果2450千克，下午卖出苹果1780千克。这一天一共卖出苹果多少千克？", answer: "2450+1780=4230(千克)", difficulty: "easy" },
+                    { q: "一个工厂原计划生产8000个零件，已经生产了5600个，还要生产多少个？", answer: "8000-5600=2400(个)", difficulty: "easy" },
+                    { q: "小明家到学校有1200米，他已经走了450米，还要走多少米才能到学校？", answer: "1200-450=750(米)", difficulty: "easy" },
+                    { q: "商店里有电视机3800台，冰箱比电视机多1200台。商店里电视机和冰箱一共有多少台？", answer: "3800+1200=5000(台)，3800+5000=8800(台)", difficulty: "medium" },
+                    { q: "体育馆有6500个座位，上午来了2350人，下午又来了1870人。还有多少个空座位？", answer: "2350+1870=4220(人)，6500-4220=2280(个)", difficulty: "hard" },
+                ]
+            },
+            2: {
+                title: "线与角",
+                multipleChoice: [
+                    { q: "一个平角等于（  ）个直角", options: ["1", "2", "3", "4"], answer: "B", difficulty: "easy" },
+                    { q: "钟表上3点整，时针和分针成（  ）角", options: ["锐角", "直角", "钝角", "平角"], answer: "B", difficulty: "medium" },
+                    { q: "下面的角中，最大的是（  ）", options: ["45°", "90°", "120°", "180°"], answer: "D", difficulty: "easy" },
+                    { q: "1个周角=（  ）个平角", options: ["2", "3", "4", "6"], answer: "A", difficulty: "medium" },
+                    { q: "下列图形中，有4个直角的是（  ）", options: ["三角形", "正方形", "梯形", "平行四边形"], answer: "B", difficulty: "easy" },
+                ],
+                fillBlank: [
+                    { q: "1个平角=（  ）个直角=（  ）度", answer: "2, 180", difficulty: "easy" },
+                    { q: "小于90度的角叫（  ）角，大于90度小于180度的角叫（  ）角", answer: "锐, 钝", difficulty: "easy" },
+                    { q: "1个周角=（  ）度，1个平角=（  ）度，1个直角=（  ）度", answer: "360, 180, 90", difficulty: "medium" },
+                    { q: "钟表上，时针从3走到6，顺时针旋转了（  ）度", answer: "90", difficulty: "medium" },
+                    { q: "一个角是35度，它是（  ）角", answer: "锐", difficulty: "easy" },
+                ],
+                calculation: [
+                    { q: "180° - 90°", answer: "90°", difficulty: "easy" },
+                    { q: "360° ÷ 4", answer: "90°", difficulty: "easy" },
+                    { q: "一个平角减去一个直角", answer: "90°", difficulty: "medium" },
+                ],
+                wordProblems: [
+                    { q: "画一个60度的角，并标出角的各部分名称", answer: "作图题（略）", difficulty: "medium" },
+                    { q: "一个角是直角的2倍，这个角是多少度？是什么角？", answer: "90×2=180(度)，平角", difficulty: "medium" },
+                    { q: "把一张圆形纸片对折3次，每一份是多少度的角？", answer: "360÷8=45(度)", difficulty: "hard" },
+                ]
+            },
+            3: {
+                title: "乘法",
+                multipleChoice: [
+                    { q: "25 × 4 = （  ）", options: ["80", "90", "100", "110"], answer: "C", difficulty: "easy" },
+                    { q: "下列算式中，积最大的是（  ）", options: ["23 × 4", "12 × 8", "15 × 6", "18 × 5"], answer: "B", difficulty: "medium" },
+                    { q: "125 × 8 = （  ）", options: ["100", "1000", "10000", "800"], answer: "B", difficulty: "easy" },
+                    { q: "一个乘数扩大10倍，另一个乘数不变，积（  ）", options: ["扩大10倍", "缩小10倍", "不变", "扩大100倍"], answer: "A", difficulty: "medium" },
+                    { q: "36 × 12 的结果是（  ）", options: ["432", "342", "423", "324"], answer: "A", difficulty: "medium" },
+                    { q: "与25×40结果相同的算式是（  ）", options: ["25×4×10", "25×20×2", "50×20", "100×10"], answer: "C", difficulty: "hard" },
+                ],
+                fillBlank: [
+                    { q: "25 × 4 = （  ），125 × 8 = （  ）", answer: "100, 1000", difficulty: "easy" },
+                    { q: "48个25相加的和是（  ），算式是（  ）", answer: "1200, 25×48", difficulty: "medium" },
+                    { q: "一个因数是23，另一个因数是40，积是（  ）", answer: "920", difficulty: "easy" },
+                    { q: "45 × 20 = 45 × 2 × （  ）= （  ）", answer: "10, 900", difficulty: "medium" },
+                    { q: "估算：38 × 22 ≈ （  ）× （  ）= （  ）", answer: "40, 20, 800", difficulty: "medium" },
+                    { q: "15 × 6 ○ 12 × 8，在○里填上'>'、'<'或'='", answer: "<", difficulty: "hard" },
+                ],
+                calculation: [
+                    { q: "25 × 4", answer: "100", difficulty: "easy" },
+                    { q: "125 × 8", answer: "1000", difficulty: "easy" },
+                    { q: "36 × 23", answer: "828", difficulty: "medium" },
+                    { q: "48 × 35", answer: "1680", difficulty: "medium" },
+                    { q: "125 × 24", answer: "3000", difficulty: "hard" },
+                    { q: "25 × 4 × 8", answer: "800", difficulty: "medium" },
+                    { q: "32 × 15", answer: "480", difficulty: "medium" },
+                ],
+                wordProblems: [
+                    { q: "学校图书馆每天借出图书45本，一个月（按30天计算）借出多少本？", answer: "45×30=1350(本)", difficulty: "easy" },
+                    { q: "一辆汽车每小时行驶65千米，从上午8时到下午2时，这辆汽车行驶了多少千米？", answer: "65×6=390(千米)", difficulty: "medium" },
+                    { q: "水果店运来苹果25箱，每箱12千克。运来的梨是苹果的2倍，运来梨多少千克？", answer: "25×12=300(千克)，300×2=600(千克)", difficulty: "hard" },
+                    { q: "一个长方形操场长85米，宽48米，这个操场的周长是多少米？", answer: "(85+48)×2=266(米)", difficulty: "medium" },
+                ]
+            },
+            5: {
+                title: "除法",
+                multipleChoice: [
+                    { q: "840 ÷ 70 = （  ）", options: ["11", "12", "13", "14"], answer: "B", difficulty: "easy" },
+                    { q: "下列算式中，商最大的是（  ）", options: ["720 ÷ 80", "630 ÷ 70", "540 ÷ 60", "450 ÷ 50"], answer: "B", difficulty: "medium" },
+                    { q: "被除数扩大10倍，除数不变，商（  ）", options: ["扩大10倍", "缩小10倍", "不变", "扩大100倍"], answer: "A", difficulty: "medium" },
+                    { q: "768 ÷ 32 的商是（  ）位数", options: ["一", "二", "三", "四"], answer: "B", difficulty: "medium" },
+                    { q: "在除法算式中，余数一定要比除数（  ）", options: ["大", "小", "相等", "无法确定"], answer: "B", difficulty: "easy" },
+                    { q: "480 ÷ 60的结果与下面哪个算式相等（  ）", options: ["48 ÷ 6", "4800 ÷ 600", "240 ÷ 30", "以上都对"], answer: "D", difficulty: "hard" },
+                ],
+                fillBlank: [
+                    { q: "720 ÷ 80 = （  ），320 ÷ 40 = （  ）", answer: "9, 8", difficulty: "easy" },
+                    { q: "被除数是540，除数是60，商是（  ）", answer: "9", difficulty: "easy" },
+                    { q: "（  ）÷ 25 = 32，（  ）÷ 48 = 16", answer: "800, 768", difficulty: "medium" },
+                    { q: "在有余数的除法中，余数要比除数（  ）", answer: "小", difficulty: "easy" },
+                    { q: "一个数除以24，商是15，余数是18，这个数是（  ）", answer: "378", difficulty: "hard" },
+                    { q: "560 ÷ 70 = 56 ÷ （  ）", answer: "7", difficulty: "medium" },
+                ],
+                calculation: [
+                    { q: "240 ÷ 60", answer: "4", difficulty: "easy" },
+                    { q: "360 ÷ 40", answer: "9", difficulty: "easy" },
+                    { q: "768 ÷ 32", answer: "24", difficulty: "medium" },
+                    { q: "936 ÷ 24", answer: "39", difficulty: "medium" },
+                    { q: "875 ÷ 35", answer: "25", difficulty: "medium" },
+                    { q: "480 ÷ 80", answer: "6", difficulty: "easy" },
+                    { q: "630 ÷ 70", answer: "9", difficulty: "easy" },
+                ],
+                wordProblems: [
+                    { q: "学校买来480本图书，平均分给6个年级，每个年级分到多少本？", answer: "480÷6=80(本)", difficulty: "easy" },
+                    { q: "一辆汽车3小时行驶了285千米，照这样计算，这辆汽车每小时行驶多少千米？", answer: "285÷3=95(千米)", difficulty: "medium" },
+                    { q: "果园里有苹果树240棵，是梨树的3倍。梨树有多少棵？", answer: "240÷3=80(棵)", difficulty: "easy" },
+                    { q: "商店运来850千克水果，卖出25箱后还剩350千克。平均每箱水果重多少千克？", answer: "(850-350)÷25=20(千克)", difficulty: "hard" },
+                ]
+            },
+            4: {
+                title: "图形的变换",
+                multipleChoice: [
+                    { q: "下面图形中，是轴对称图形的是（  ）", options: ["平行四边形", "长方形", "梯形", "任意三角形"], answer: "B", difficulty: "easy" },
+                    { q: "正方形有（  ）条对称轴", options: ["1", "2", "4", "无数条"], answer: "C", difficulty: "easy" },
+                    { q: "圆有（  ）条对称轴", options: ["1", "2", "4", "无数条"], answer: "D", difficulty: "medium" },
+                    { q: "下列现象中，属于平移的是（  ）", options: ["风车转动", "电梯上下", "螺旋桨转动", "钟摆摆动"], answer: "B", difficulty: "medium" },
+                    { q: "把一个图形绕某一点旋转90度后，这个图形（  ）", options: ["变大了", "变小了", "形状改变了", "位置改变了"], answer: "D", difficulty: "easy" },
+                ],
+                fillBlank: [
+                    { q: "如果一个图形沿着一条直线对折，两侧能够完全重合，这个图形就是（  ）图形", answer: "轴对称", difficulty: "easy" },
+                    { q: "长方形有（  ）条对称轴，等腰三角形有（  ）条对称轴", answer: "2, 1", difficulty: "medium" },
+                    { q: "平移和旋转都只改变图形的（  ），不改变图形的大小和形状", answer: "位置", difficulty: "medium" },
+                    { q: "钟面上，时针从12走到3，顺时针旋转了（  ）度", answer: "90", difficulty: "easy" },
+                ],
+                calculation: [],
+                wordProblems: [
+                    { q: "判断：电梯的上下运动是平移还是旋转？", answer: "平移", difficulty: "easy" },
+                    { q: "判断：方向盘的转动是平移还是旋转？", answer: "旋转", difficulty: "easy" },
+                    { q: "画出正方形的所有对称轴", answer: "作图题（略）", difficulty: "medium" },
+                ]
+            },
+            6: {
+                title: "方向与位置",
+                multipleChoice: [
+                    { q: "面向北方，你的右面是（  ）", options: ["东", "南", "西", "北"], answer: "A", difficulty: "easy" },
+                    { q: "小明家在学校的南面，那么学校在小明家的（  ）", options: ["东面", "南面", "西面", "北面"], answer: "D", difficulty: "easy" },
+                    { q: "地图通常是按照（  ）的方向绘制的", options: ["上北下南，左西右东", "上南下北，左东右西", "上东下西，左北右南", "上西下东，左南右北"], answer: "A", difficulty: "medium" },
+                    { q: "太阳从（  ）方升起", options: ["东", "南", "西", "北"], answer: "A", difficulty: "easy" },
+                ],
+                fillBlank: [
+                    { q: "早晨，面对太阳，前面是（  ），后面是（  ）", answer: "东, 西", difficulty: "easy" },
+                    { q: "地图上的方向：上面是（  ），下面是（  ），左面是（  ），右面是（  ）", answer: "北, 南, 西, 东", difficulty: "medium" },
+                    { q: "指南针的红色指针指向（  ）方", answer: "北", difficulty: "medium" },
+                    { q: "东与（  ）相对，南与（  ）相对", answer: "西, 北", difficulty: "easy" },
+                ],
+                calculation: [],
+                wordProblems: [
+                    { q: "小明从家出发，先向东走200米到书店，再向北走150米到学校。放学后，他应该怎样走回家？", answer: "先向南走150米，再向西走200米", difficulty: "medium" },
+                    { q: "从学校向东走500米到邮局，从邮局向哪个方向走多少米回到学校？", answer: "向西走500米", difficulty: "easy" },
+                ]
+            },
+            7: {
+                title: "生活中的负数",
+                multipleChoice: [
+                    { q: "如果+5表示收入5元，那么-8表示（  ）", options: ["收入8元", "支出8元", "收入3元", "支出3元"], answer: "B", difficulty: "easy" },
+                    { q: "零下15℃记作（  ）", options: ["-15℃", "+15℃", "15℃", "0℃"], answer: "A", difficulty: "easy" },
+                    { q: "在-3、0、+2、-5这几个数中，最小的数是（  ）", options: ["-3", "0", "+2", "-5"], answer: "D", difficulty: "medium" },
+                    { q: "下列说法正确的是（  ）", options: ["负数都比0小", "负数都比正数大", "0是负数", "-1比-2大"], answer: "A", difficulty: "medium" },
+                ],
+                fillBlank: [
+                    { q: "如果+20米表示向东走20米，那么-15米表示向（  ）走（  ）米", answer: "西, 15", difficulty: "easy" },
+                    { q: "水位上升3米记作+3米，那么水位下降5米记作（  ）米", answer: "-5", difficulty: "easy" },
+                    { q: "零上8℃记作（  ），零下12℃记作（  ）", answer: "+8℃, -12℃", difficulty: "easy" },
+                    { q: "在-6、-1、0、+4、-3这几个数中，最大的是（  ），最小的是（  ）", answer: "+4, -6", difficulty: "medium" },
+                ],
+                calculation: [],
+                wordProblems: [
+                    { q: "某市某天的最高气温是零上8℃，最低气温是零下3℃。这一天的最高气温比最低气温高多少度？", answer: "8-(-3)=11(度)", difficulty: "medium" },
+                    { q: "小明在做游戏，规定向前走为正，向后走为负。小明按以下路线行走：+5米、-3米、+8米、-6米、-2米。最后小明在起点的前面还是后面？距离起点多远？", answer: "5-3+8-6-2=2(米)，前面2米", difficulty: "hard" },
+                ]
+            },
+            8: {
+                title: "可能性",
+                multipleChoice: [
+                    { q: "下列事件中，（  ）是不可能发生的", options: ["明天会下雨", "太阳从西边升起", "抛硬币正面朝上", "抽奖中奖"], answer: "B", difficulty: "easy" },
+                    { q: "一个袋子里有5个红球和3个白球，任意摸出1个球，（  ）的可能性大", options: ["摸到红球", "摸到白球", "一样大", "无法确定"], answer: "A", difficulty: "easy" },
+                    { q: "下列事件中，（  ）是必然发生的", options: ["明天会下雨", "太阳从东边升起", "抛硬币正面朝上", "买彩票中奖"], answer: "B", difficulty: "medium" },
+                    { q: "转盘被平均分成4份，其中2份是红色，1份是黄色，1份是蓝色。转动转盘，指针停在（  ）的可能性最大", options: ["红色", "黄色", "蓝色", "一样大"], answer: "A", difficulty: "medium" },
+                ],
+                fillBlank: [
+                    { q: "从1-10这10个数中任意抽取一个，抽到（  ）数的可能性大", answer: "偶", difficulty: "easy" },
+                    { q: "一个盒子里有6个红球和4个白球，任意摸出1个球，摸到（  ）球的可能性大", answer: "红", difficulty: "easy" },
+                    { q: "袋子里有5个红球和若干个白球，任意摸出1个球，摸到红球和白球的可能性相等。袋子里有（  ）个白球", answer: "5", difficulty: "medium" },
+                ],
+                calculation: [],
+                wordProblems: [
+                    { q: "抛一枚硬币，正面朝上和反面朝上的可能性是否相等？", answer: "相等", difficulty: "easy" },
+                    { q: "袋子里有红、黄、蓝三种颜色的球共20个，其中红球8个，黄球7个。任意摸出1个球，摸到哪种颜色球的可能性最小？", answer: "蓝球，因为蓝球只有5个", difficulty: "medium" },
+                ]
+            }
+        };
+
+        // 随机打乱数组
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // 根据难度筛选题目
+        function filterByDifficulty(questions, difficulty, count) {
+            let filtered = [];
+
+            if (difficulty === 'easy') {
+                const easy = questions.filter(q => q.difficulty === 'easy');
+                const medium = questions.filter(q => q.difficulty === 'medium');
+                const hard = questions.filter(q => q.difficulty === 'hard');
+                filtered = [
+                    ...shuffleArray(easy).slice(0, Math.ceil(count * 0.6)),
+                    ...shuffleArray(medium).slice(0, Math.ceil(count * 0.3)),
+                    ...shuffleArray(hard).slice(0, Math.ceil(count * 0.1))
+                ];
+            } else if (difficulty === 'medium') {
+                const easy = questions.filter(q => q.difficulty === 'easy');
+                const medium = questions.filter(q => q.difficulty === 'medium');
+                const hard = questions.filter(q => q.difficulty === 'hard');
+                filtered = [
+                    ...shuffleArray(easy).slice(0, Math.ceil(count * 0.3)),
+                    ...shuffleArray(medium).slice(0, Math.ceil(count * 0.5)),
+                    ...shuffleArray(hard).slice(0, Math.ceil(count * 0.2))
+                ];
+            } else if (difficulty === 'hard') {
+                const easy = questions.filter(q => q.difficulty === 'easy');
+                const medium = questions.filter(q => q.difficulty === 'medium');
+                const hard = questions.filter(q => q.difficulty === 'hard');
+                filtered = [
+                    ...shuffleArray(easy).slice(0, Math.ceil(count * 0.1)),
+                    ...shuffleArray(medium).slice(0, Math.ceil(count * 0.4)),
+                    ...shuffleArray(hard).slice(0, Math.ceil(count * 0.5))
+                ];
+            }
+
+            return shuffleArray(filtered).slice(0, count);
+        }
+
+        // 生成测试卷
+        function generateTest() {
+            console.log('生成测试卷...');
+
+            const unit = document.getElementById('unit-select').value;
+            const difficulty = document.getElementById('difficulty-select').value;
+
+            console.log('单元:', unit, '难度:', difficulty);
+
+            const bank = questionBank[unit];
+
+            if (!bank) {
+                alert('该单元题库正在完善中！');
+                return;
+            }
+
+            const multipleChoice = filterByDifficulty(bank.multipleChoice, difficulty, 5);
+            const fillBlank = filterByDifficulty(bank.fillBlank, difficulty, 5);
+            const calculation = filterByDifficulty(bank.calculation, difficulty, 6);
+            const wordProblems = filterByDifficulty(bank.wordProblems, difficulty, 3);
+
+            let content = `四年级数学第${getUnitNumber(unit)}单元测试卷 - ${bank.title}
+（北师大版 · 难度：${getDifficultyName(difficulty)}）
+
+班级：________    姓名：________    学号：________    成绩：________
+
+================================================================================
+
+一、选择题（每题3分，共${multipleChoice.length * 3}分）
+
+`;
+
+            multipleChoice.forEach((item, index) => {
+                content += `${index + 1}. ${item.q}\n`;
+                item.options.forEach((opt, i) => {
+                    content += `   ${String.fromCharCode(65 + i)}. ${opt}    `;
+                });
+                content += '\n\n';
+            });
+
+            content += `================================================================================
+
+二、填空题（每空2分，共${fillBlank.length * 4}分）
+
+`;
+
+            fillBlank.forEach((item, index) => {
+                content += `${index + multipleChoice.length + 1}. ${item.q}\n\n`;
+            });
+
+            content += `================================================================================
+
+三、计算题（每题3分，共${calculation.length * 3}分）
+
+`;
+
+            calculation.forEach((item, index) => {
+                content += `${index + multipleChoice.length + fillBlank.length + 1}. ${item.q} =\n\n`;
+            });
+
+            content += `================================================================================
+
+四、应用题（每题6分，共${wordProblems.length * 6}分）
+
+`;
+
+            wordProblems.forEach((item, index) => {
+                content += `${index + multipleChoice.length + fillBlank.length + calculation.length + 1}. ${item.q}\n\n\n\n`;
+            });
+
+            content += `================================================================================
+
+注意事项：
+1. 请认真审题，仔细计算
+2. 计算题要写出完整过程
+3. 应用题要写出算式和答案
+4. 检查时注意单位是否正确
+
+本试卷总分：100分    考试时间：60分钟
+
+
+<div class="page-break"></div>
+
+================================================================================
+================================================================================
+================================================================================
+
+参考答案
+
+================================================================================
+
+一、选择题答案
+
+`;
+
+            multipleChoice.forEach((item, index) => {
+                content += `${index + 1}. ${item.answer}    `;
+                if ((index + 1) % 5 === 0) content += '\n';
+            });
+
+            content += `\n\n================================================================================
+
+二、填空题答案
+
+`;
+
+            fillBlank.forEach((item, index) => {
+                content += `${index + multipleChoice.length + 1}. ${item.answer}\n`;
+            });
+
+            content += `\n================================================================================
+
+三、计算题答案
+
+`;
+
+            calculation.forEach((item, index) => {
+                content += `${index + multipleChoice.length + fillBlank.length + 1}. ${item.q} = ${item.answer}\n`;
+            });
+
+            content += `\n================================================================================
+
+四、应用题答案
+
+`;
+
+            wordProblems.forEach((item, index) => {
+                content += `${index + multipleChoice.length + fillBlank.length + calculation.length + 1}. ${item.answer}\n\n`;
+            });
+
+            content += `================================================================================`;
+
+            document.getElementById('test-content').innerHTML = '<pre>' + content + '</pre>';
+            document.getElementById('test-output').style.display = 'block';
+            document.getElementById('test-output').scrollIntoView({ behavior: 'smooth' });
+
+            console.log('试卷生成成功！');
+        }
+
+        function getUnitNumber(unit) {
+            const units = { '1': '一', '2': '二', '3': '三', '4': '四', '5': '五', '6': '六', '7': '七', '8': '八' };
+            return units[unit] || unit;
+        }
+
+        function getDifficultyName(difficulty) {
+            const names = {
+                'easy': '基础',
+                'medium': '中等（海淀区标准）',
+                'hard': '提高'
+            };
+            return names[difficulty] || difficulty;
+        }
+
+        function downloadTest() {
+            const content = document.getElementById('test-content').textContent;
+            const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+
+            const unit = document.getElementById('unit-select').value;
+            const difficulty = document.getElementById('difficulty-select').value;
+            const date = new Date().toISOString().slice(0, 10);
+
+            link.download = `四年级数学第${unit}单元-${difficulty}-${date}.md`;
+            link.click();
+        }
+
+        console.log('页面加载完成！题库已准备就绪。');
+    </script>
+</body>
+</html>
