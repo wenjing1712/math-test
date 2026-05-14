@@ -2,9 +2,11 @@
 
 面向北京海淀区四年级学生的数学学习辅助工具，基于北师大版教材，提供"测试 → 批改诊断 → 针对性练习 → 能力追踪"的完整学习闭环。
 
-## 在线使用
+## 在线演示
 
-直接用浏览器打开 `index.html` 即可使用，无需安装任何软件。
+🔗 **https://wenjing1712.github.io/math-test/**
+
+直接访问即可使用，无需下载安装。或者克隆仓库后在浏览器打开 `index.html`。
 
 ---
 
@@ -123,19 +125,26 @@
 ### 文件结构
 
 ```
-math-grade4-website/
-├── grade4-math-v2.html        # 主页面（V2：自适应学习系统）
-├── grade4-math.html           # 基础版页面（仅试卷生成）
-├── knowledge-graph.js         # 知识图谱定义
-├── diagnostic-engine.js       # 诊断引擎（能力模型 + 批改 + 自适应出题）
-├── full-question-bank.js      # 完整题库（全部 16 单元，已标注知识点）
-├── styles.css                 # 样式文件
-├── script.js                  # 基础版脚本
-├── question-bank.js           # 基础题库
-├── test-generator.js          # 出题工具
-├── semester1-clean.js         # 上学期题库
-├── semester2-clean.js         # 下学期题库
-└── README.md                  # 说明文档
+math-test/
+├── index.html                      # 主页面（AI自适应学习系统）
+├── src/
+│   ├── data/
+│   │   └── question-bank.js        # 完整题库（16个单元，600+题）
+│   ├── modules/
+│   │   ├── knowledge-graph.js      # 知识图谱（60+知识点）
+│   │   └── diagnostic-engine.js    # 诊断引擎（批改+自适应）
+│   └── styles/
+│       └── main.css                # 主样式文件
+├── docs/
+│   ├── DEVELOPMENT.md              # 开发文档
+│   └── CONTRIBUTING.md             # 贡献指南
+├── .github/workflows/
+│   └── deploy.yml                  # GitHub Actions 自动部署
+├── .prettierrc                     # 代码格式化配置
+├── .eslintrc.json                  # 代码质量检查配置
+├── .editorconfig                   # 编辑器配置
+├── LICENSE                         # MIT 开源许可证
+└── README.md                       # 本文档
 ```
 
 ---
@@ -158,6 +167,36 @@ math-grade4-website/
 - [ ] 扩展至人教版、苏教版
 - [ ] 家长端学习报告推送
 - [ ] 多人共用同步数据（云端存储）
+
+---
+
+---
+
+## 隐私说明
+
+🔒 **数据安全承诺**
+
+- ✅ 所有学生数据仅存储在**本地浏览器**（localStorage）
+- ✅ **不会上传**到任何服务器
+- ✅ **不收集**任何个人信息
+- ⚠️ 清除浏览器数据会丢失记录，请定期使用"导出数据"功能备份
+
+---
+
+## 贡献
+
+欢迎贡献代码、题目或文档！
+
+- 🐛 [报告问题](https://github.com/wenjing1712/math-test/issues)
+- 💡 [功能建议](https://github.com/wenjing1712/math-test/issues)
+- 📖 [贡献指南](docs/CONTRIBUTING.md)
+- 🛠️ [开发文档](docs/DEVELOPMENT.md)
+
+---
+
+## 许可证
+
+本项目采用 [MIT License](LICENSE) 开源。
 
 ---
 
